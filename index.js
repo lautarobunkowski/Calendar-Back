@@ -1,11 +1,14 @@
-const server = require("./src/server");
-require("dotenv").config();
-const PORT = process.env.PORT || 3001;
+import server from "./src/server.js";
+import dotenv from "dotenv";
+import { sequelize } from "./src/database.js";
+dotenv.config();
+const { PORT } = process.env;
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   try {
-    console.log("Server running on port", 3001);
+    await sequelize.sync({ force: true });
+    console.log("server listen on port", PORT);
   } catch (error) {
-    console.log(error);
+    console.error("error syncsing database");
   }
 });

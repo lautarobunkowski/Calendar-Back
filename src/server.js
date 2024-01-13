@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
+import mainRouter from "./routers/index.js";
 
 const server = express();
 
-server.get("/", (req, res) => {
-  res.send("Hello World");
-});
+server.use(express.json());
+server.use(mainRouter);
 
-module.exports = server;
+export default server;

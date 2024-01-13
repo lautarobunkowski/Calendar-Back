@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Calendar back-end on node.js",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -19,8 +20,15 @@
   },
   "homepage": "https://github.com/lautarobunkowski/Calendar-Back#readme",
   "dependencies": {
+    "axios": "^1.6.5",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "postgres": "^3.4.3",
+    "sequelize": "^6.35.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
