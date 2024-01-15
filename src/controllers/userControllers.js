@@ -1,13 +1,12 @@
 import axios, { all } from "axios";
 import { sequelize, User } from "../database.js";
 
-const postUserController = async (name, email) => {
+export const postUserController = async (name, email) => {
   try {
     const result = await User.findOrCreate({
       where: { email, name },
       defaults: { email, name },
     });
-    console.log(result);
     return result;
   } catch (error) {
     throw error;
@@ -15,7 +14,7 @@ const postUserController = async (name, email) => {
 };
 
 
-const getUsersController = async () => {
+export const getUsersController = async () => {
   try {
     const { data } = await axios("https://jsonplaceholder.typicode.com/users");
     if (!data) {
@@ -25,9 +24,4 @@ const getUsersController = async () => {
   } catch (error) {
     throw error;
   }
-};
-
-export default {
-  postUserController,
-  getUsersController
 };

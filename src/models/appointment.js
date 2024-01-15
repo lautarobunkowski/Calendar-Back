@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 
 export default (sequelize) => {
   sequelize.define(
-    "Appoinment",
+    "Appointment",
     {
       id: {
         type: DataTypes.UUID,
@@ -10,9 +10,9 @@ export default (sequelize) => {
         // allowNull: false,
         primaryKey: true,
       },
-      fecha: { type: DataTypes.DATE, allowNull: false },
-      horario: { type: DataTypes.TIME, allowNull: false },
+      date: { type: DataTypes.DATEONLY, allowNull: false },
+      time: { type: DataTypes.TIME, allowNull: false },
     },
-    { timestamps: true }
+    { timestamps: false }
   );
 };

@@ -4,4 +4,4 @@ const appointmentRouter = Router();
 
 appointmentRouter.post("/appointment", postAppointmentHandler);
 
-export default userRouter;
+export default appointmentRouter;

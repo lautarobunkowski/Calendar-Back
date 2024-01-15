@@ -1,8 +1,8 @@
 // controller -----------------------------------
-import {getUsersController, postUserController} from "../controllers/userControllers";
+import { postUserController, getUsersController } from "../controllers/userControllers.js";
 
 
-const getUsersHandler = async (req, res) => {
+export const getUsersHandler = async (req, res) => {
   try {
     const response = await getUsersController();
     res.status(200).json(response);
@@ -11,7 +11,7 @@ const getUsersHandler = async (req, res) => {
   }
 };
 
-const postUserHandler = async (req, res) => {
+export const postUserHandler = async (req, res) => {
   try {
     const { name, email } = req.body;
     const response = await postUserController(name, email);
@@ -20,5 +20,3 @@ const postUserHandler = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-export default {getUsersHandler, postUserHandler};

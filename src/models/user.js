@@ -13,6 +13,6 @@ export default (sequelize) => {
       email: { type: DataTypes.STRING, allowNull: false },
       name: { type: DataTypes.STRING, allowNull: false },
     },
-    { timestamps: true }
+    { timestamps: false }
   );
 };

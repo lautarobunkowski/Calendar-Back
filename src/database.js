@@ -15,4 +15,8 @@ UserCreate(sequelize);
 
 const { User, Appointment } = sequelize.models;
 
+User.hasMany(Appointment)
+Appointment.belongsTo(User)
+
+
 export { User, Appointment, sequelize };

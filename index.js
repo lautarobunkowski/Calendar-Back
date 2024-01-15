@@ -9,6 +9,8 @@ server.listen(PORT, async () => {
     await sequelize.sync({ force: true });
     console.log("server listen on port", PORT);
   } catch (error) {
-    console.error("error syncsing database");
+    // console.error("error syncsing database");
+    console.error(error.message);
+
   }
 });
