@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
+import AppointmentCreate from "./models/appointment.js";
 import UserCreate from "./models/user.js";
 const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
@@ -9,8 +10,9 @@ const sequelize = new Sequelize(
   { logging: false, native: false }
 );
 
+AppointmentCreate(sequelize);
 UserCreate(sequelize);
 
-const { User } = sequelize.models;
+const { User, Appointment } = sequelize.models;
 
-export { User, sequelize };
+export { User, Appointment, sequelize };

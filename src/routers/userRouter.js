@@ -1,9 +1,8 @@
 import { Router } from "express";
-import userGetHandler from "../handlers/userGetHandler.js";
-import userPostHandler from "../handlers/userPostHandler.js";
+import {getUsersHandler, postUserHandler} from "../handlers/userHandlers.js";
 const userRouter = Router();
 
-userRouter.get("/user", userGetHandler);
-userRouter.post("/user", userPostHandler);
+userRouter.get("/user", getUsersHandler);
+userRouter.post("/user", postUserHandler);
 
 export default userRouter;
