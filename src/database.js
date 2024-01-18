@@ -1,8 +1,12 @@
+// MODELS -----------------------------------------------
+import AdminCreate from "./models/admin.js";
+import ServiceCreate from "./models/service.js";
+import AppointmentCreate from "./models/appointment.js";
+import UserCreate from "./models/user.js";
+// --------------------------------------------------------
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
-import AppointmentCreate from "./models/appointment.js";
-import UserCreate from "./models/user.js";
 const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
 const sequelize = new Sequelize(
@@ -13,10 +17,22 @@ const sequelize = new Sequelize(
 AppointmentCreate(sequelize);
 UserCreate(sequelize);
 
-const { User, Appointment } = sequelize.models;
+AdminCreate(sequelize);
+ServiceCreate(sequelize);
 
-User.hasMany(Appointment)
-Appointment.belongsTo(User)
+const { User, Appointment, Admin, Service } = sequelize.models;
 
+// Relationship ---------------------------
+// Usuario-Turno
+User.hasMany(Appointment);
+Appointment.belongsTo(User);
 
-export { User, Appointment, sequelize };
+// Admin-Servicio
+Admin.hasMany(Service);
+Service.belongsTo(Admin);
+
+// Turno-servicio
+Appointment.belongsTo(Service);
+Service.hasMany(Appointment);
+
+export { User, Appointment, Admin, Service, sequelize };

@@ -11,6 +11,5 @@ server.listen(PORT, async () => {
   } catch (error) {
     // console.error("error syncsing database");
     console.error(error.message);
-
   }
 });
