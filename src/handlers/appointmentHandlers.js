@@ -21,7 +21,7 @@ export const postAppointmentHandler = async (req, res) => {
 
 export const getAllAppointmentHandler = async (req, res) => {
   try {
-    const { service, date } = req.body;
+    const { service, date } = req.query;
     const response = await getAllAppointmentController(service, date);
     res.status(200).json(response);
   } catch (error) {

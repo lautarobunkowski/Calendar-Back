@@ -1,4 +1,5 @@
 import { Appointment, User, Service } from "../database.js";
+import { Sequelize } from "sequelize";
 
 export const postAppointmentController = async (
   date,
@@ -52,7 +53,28 @@ export const postAppointmentController = async (
 
 export const getAllAppointmentController = async (service, date) => {
   try {
-    const allAppoinments = await Appointment.findAll();
+    const serviceFind = await Service.findOne({
+      where: {
+        name: service,
+      },
+    });
+    if (serviceFind === null) {
+      return {
+        error: "Conflicto de Servicio",
+        message: "Servicio no encontrado",
+      };
+    }
+
+    const allAppoinments = await Appointment.findAll({
+      where: { date },
+    });
+    // if (allAppoinments === null) {
+    //   return {
+    //     error: "Conflicto de Turnos",
+    //     message: "No se ha encontrado Turnos disponibles para esa fecha",
+    //   };
+    // }
+    // return { ...serviceFind.dataValues, appointments: allAppoinments };
     return allAppoinments;
   } catch (error) {
     throw error;

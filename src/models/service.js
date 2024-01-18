@@ -15,15 +15,17 @@ export default (sequelize) => {
       startTime: { type: DataTypes.TIME, allowNull: false },
       endTime: { type: DataTypes.TIME, allowNull: false },
       days: {
-        type: DataTypes.ENUM(
-          "Lunes",
-          "Martes",
-          "Miercoles",
-          "Jueves",
-          "Viernes",
-          "Sabado",
-          "Domingo"
-        ),
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        // days: {
+        //   type: DataTypes.ENUM(
+        //     "Lunes",
+        //     "Martes",
+        //     "Miercoles",
+        //     "Jueves",
+        //     "Viernes",
+        //     "Sabado",
+        //     "Domingo"
+        //   ),
         allowNull: false,
       },
     },
