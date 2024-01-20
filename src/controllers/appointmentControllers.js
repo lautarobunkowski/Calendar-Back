@@ -68,14 +68,37 @@ export const getAllAppointmentController = async (service, date) => {
     const allAppoinments = await Appointment.findAll({
       where: { date },
     });
-    // if (allAppoinments === null) {
-    //   return {
-    //     error: "Conflicto de Turnos",
-    //     message: "No se ha encontrado Turnos disponibles para esa fecha",
-    //   };
-    // }
-    // return { ...serviceFind.dataValues, appointments: allAppoinments };
-    return allAppoinments;
+    const dayAppointmentsCalculator = (startTime, endTime, duration, allAppoinments) => {
+      const daysAppointments = []
+      let startTimeMinutes = 0;
+      let endTimeMinutes = 0;
+      let durationPerMinutes = 0;
+      startTime.split(":").forEach((e, i) => {
+        if(i === 0){
+          return startTimeMinutes = Number(e) * 60
+        }
+        startTimeMinutes += Number(e)
+      })
+      endTime.split(":").forEach((e, i) => {
+        if(i === 0){
+          return endTimeMinutes = Number(e) * 60
+        }
+        endTimeMinutes += Number(e)
+      })
+      duration.split(":").forEach((e, i) => {
+        if(i === 0){
+          return durationPerMinutes = Number(e) * 60
+        }
+        durationPerMinutes += Number(e)
+      })
+      console.log(durationPerMinutes)
+      const appointmentsPerDay = (endTimeMinutes - startTimeMinutes) / durationPerMinutes;
+      
+      return appointmentsPerDay;
+    }
+    console.log(dayAppointmentsCalculator(serviceFind.startTime, serviceFind.endTime, serviceFind.duration,allAppoinments))
+
+    return { ...serviceFind.dataValues, appointments: allAppoinments };
   } catch (error) {
     throw error;
   }
