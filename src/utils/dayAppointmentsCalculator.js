@@ -46,7 +46,6 @@ const dayAppointmentsCalculator = (
     startTime = dayjs(startTime, "HH:mm:ss")
       .add(durationPerMinutes, "minute")
       .format("HH:mm:ss");
-    console.log(startTime);
   }
 
   return daysAppointments;
