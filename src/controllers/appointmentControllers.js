@@ -53,9 +53,11 @@ export const postAppointmentController = async (
 
 export const getAllAppointmentController = async (service, date) => {
   try {
+    const decodeService = decodeURIComponent(service)
+    console.log(decodeService)
     const serviceFind = await Service.findOne({
       where: {
-        name: service,
+        name: decodeService,
       },
     });
     if (serviceFind === null) {
