@@ -22,6 +22,12 @@ export const getServiceHandler = async (req, res) => {
     const response = await getServiceController(
       name
     );
+
+    if(response.error){
+      if(response.status === 404){
+        return res.status(404).json(response)
+      }
+    }
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -34,15 +34,14 @@ export const postServiceController = async (
 export const getServiceController = async (
   name
 ) => {
-  console.log(name)
   try {
     const lowerCaseName = name.toLowerCase();
     const service= await Service.findOne({
       where: { name: lowerCaseName },
     });
-    // console.log(service
     if (!service) {
       return {
+        status: 404,
         error: "Conflicto de Servicio",
         message: "No existe servicio con ese nombre",
       };

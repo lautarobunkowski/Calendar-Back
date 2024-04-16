@@ -6,7 +6,8 @@ export const postAppointmentController = async (
   time,
   name,
   email,
-  service
+  service,
+  phone
 ) => {
   try {
     const serviceFind = await Service.findOne({
@@ -17,6 +18,7 @@ export const postAppointmentController = async (
 
     if (serviceFind === null) {
       return {
+        status: 409,
         error: "Conflicto de Servicio",
         message: "Servicio no encontrado",
       };
@@ -27,6 +29,7 @@ export const postAppointmentController = async (
       defaults: {
         email: email,
         name: name,
+        phone: phone
       },
     });
     const [appointment, isCreatedAppointment] = await Appointment.findOrCreate({
@@ -39,7 +42,7 @@ export const postAppointmentController = async (
 
     if (!isCreatedAppointment) {
       return {
-        error: "Conflicto de turno",
+        status: 409,
         message:
           "La fecha y hora seleccionadas ya están ocupadas por otro turno. Por favor, elige una fecha y hora diferente.",
       };
@@ -54,7 +57,7 @@ export const postAppointmentController = async (
 export const getAllAppointmentController = async (service, date) => {
   try {
     const decodeService = decodeURIComponent(service)
-    console.log(decodeService)
+
     const serviceFind = await Service.findOne({
       where: {
         name: decodeService,
@@ -74,6 +77,48 @@ export const getAllAppointmentController = async (service, date) => {
     ).map((app) => {
       return app.get();
     });
+
+    console.log(allAppoinments)
+
+    return {
+      ...serviceFind.dataValues,
+      appointments: dayAppointmentsCalculator(
+        serviceFind.startTime,
+        serviceFind.endTime,
+        serviceFind.duration,
+        allAppoinments
+      ),
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAppointmentController = async (service, date) => {
+  try {
+    const decodeService = decodeURIComponent(service)
+
+    const serviceFind = await Service.findOne({
+      where: {
+        name: decodeService,
+      },
+    });
+    if (serviceFind === null) {
+      return {
+        error: "Conflicto de Servicio",
+        message: "Servicio no encontrado",
+      };
+    }
+
+    const allAppoinments = (
+      await Appointment.findAll({
+        where: { date },
+      })
+    ).map((app) => {
+      return app.get();
+    });
+
+    console.log(allAppoinments)
 
     return {
       ...serviceFind.dataValues,
