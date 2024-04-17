@@ -28,6 +28,7 @@ export default (sequelize) => {
         //   ),
         allowNull: false,
       },
+      location: { type: DataTypes.STRING(255), allowNull: false },
     },
     { timestamps: false }
   );

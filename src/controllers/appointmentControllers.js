@@ -29,7 +29,7 @@ export const postAppointmentController = async (
       defaults: {
         email: email,
         name: name,
-        phone: phone
+        phone: phone,
       },
     });
     const [appointment, isCreatedAppointment] = await Appointment.findOrCreate({
@@ -56,7 +56,7 @@ export const postAppointmentController = async (
 
 export const getAllAppointmentController = async (service, date) => {
   try {
-    const decodeService = decodeURIComponent(service)
+    const decodeService = decodeURIComponent(service);
 
     const serviceFind = await Service.findOne({
       where: {
@@ -77,8 +77,6 @@ export const getAllAppointmentController = async (service, date) => {
     ).map((app) => {
       return app.get();
     });
-
-    console.log(allAppoinments)
 
     return {
       ...serviceFind.dataValues,
@@ -94,41 +92,37 @@ export const getAllAppointmentController = async (service, date) => {
   }
 };
 
-export const getAppointmentController = async (service, date) => {
+export const getAppointmentController = async (appointmentId) => {
   try {
-    const decodeService = decodeURIComponent(service)
+    // const decodeService = decodeURIComponent(service)
 
-    const serviceFind = await Service.findOne({
-      where: {
-        name: decodeService,
-      },
+    // const serviceFind = await Service.findOne({
+    //   where: {
+    //     name: decodeService,
+    //   },
+    // });
+    // if (serviceFind === null) {
+    //   return {
+    //     error: "Conflicto de Servicio",
+    //     message: "Servicio no encontrado",
+    //   };
+    // }
+
+    const appoinment = await Appointment.findByPk(appointmentId, {
+      include: [
+        { model: User, attributes: ["name"] },
+        { model: Service, attributes: ["name", "location", "duration"] },
+      ],
     });
-    if (serviceFind === null) {
+
+    if (appoinment === undefined) {
       return {
-        error: "Conflicto de Servicio",
-        message: "Servicio no encontrado",
+        error: "Conflicto de Turno",
+        status: 404,
+        message: "el Turno solicitado no existe",
       };
     }
-
-    const allAppoinments = (
-      await Appointment.findAll({
-        where: { date },
-      })
-    ).map((app) => {
-      return app.get();
-    });
-
-    console.log(allAppoinments)
-
-    return {
-      ...serviceFind.dataValues,
-      appointments: dayAppointmentsCalculator(
-        serviceFind.startTime,
-        serviceFind.endTime,
-        serviceFind.duration,
-        allAppoinments
-      ),
-    };
+    return appoinment;
   } catch (error) {
     throw error;
   }

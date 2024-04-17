@@ -1,11 +1,10 @@
 import {
   postAppointmentController,
   getAllAppointmentController,
-  getAppointmentController
+  getAppointmentController,
 } from "../controllers/appointmentControllers.js";
 
 export const postAppointmentHandler = async (req, res) => {
-  console.log(req.body)
   try {
     const { date, time, name, email, service, phone } = req.body;
     const response = await postAppointmentController(
@@ -16,9 +15,9 @@ export const postAppointmentHandler = async (req, res) => {
       service,
       phone
     );
-    if(response.status){
-      if(response.status === 409){
-        return res.status(409).json(response)
+    if (response.status) {
+      if (response.status === 409) {
+        return res.status(409).json(response);
       }
     }
     res.status(200).json(response);
@@ -39,8 +38,13 @@ export const getAllAppointmentHandler = async (req, res) => {
 
 export const getAppointmentHandler = async (req, res) => {
   try {
-    const { id } = req.query;
-    const response = await getAppointmentController(id);
+    const appointmentId = req.params.appointmentId;
+    const response = await getAppointmentController(appointmentId);
+    if (response.error) {
+      if (response.status === 404) {
+        return res.status(404).json(response);
+      }
+    }
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });

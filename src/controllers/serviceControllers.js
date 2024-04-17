@@ -5,7 +5,8 @@ export const postServiceController = async (
   duration,
   startTime,
   endTime,
-  days
+  days,
+  location
 ) => {
   try {
     const lowerCaseName = name.toLowerCase();
@@ -16,6 +17,7 @@ export const postServiceController = async (
         startTime,
         endTime,
         days,
+        location,
       },
     });
     if (!isCreatedService) {
@@ -31,12 +33,10 @@ export const postServiceController = async (
   }
 };
 
-export const getServiceController = async (
-  name
-) => {
+export const getServiceController = async (name) => {
   try {
     const lowerCaseName = name.toLowerCase();
-    const service= await Service.findOne({
+    const service = await Service.findOne({
       where: { name: lowerCaseName },
     });
     if (!service) {
