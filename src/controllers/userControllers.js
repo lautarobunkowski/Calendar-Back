@@ -3,10 +3,13 @@ import { sequelize, User } from "../database.js";
 
 export const postUserController = async (name, email) => {
   try {
-    const result = await User.findOrCreate({
+    const findUser = await User.findOne({
       where: { email, name },
-      defaults: { email, name },
     });
+    if(findUser){
+      throw new Error("the username or/and email is taken");
+    }
+    const result = await User.create({email, name});
     return result;
   } catch (error) {
     throw error;
@@ -14,13 +17,15 @@ export const postUserController = async (name, email) => {
 };
 
 
-export const getUsersController = async () => {
+export const getUserController = async (name) => {
   try {
-    const { data } = await axios("https://jsonplaceholder.typicode.com/users");
-    if (!data) {
-      throw new Error("data no found");
+    const user = await User.findOne({
+      where:{name}
+    })
+    if (!user) {
+      throw new Error("user not found");
     }
-    return data;
+    return user;
   } catch (error) {
     throw error;
   }

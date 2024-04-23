@@ -28,8 +28,12 @@ User.hasMany(Appointment);
 Appointment.belongsTo(User);
 
 // Admin-Servicio
-Admin.hasMany(Service);
-Service.belongsTo(Admin);
+User.hasMany(Service);
+Service.belongsTo(User, {
+  foreignKey: {
+    allowNull: false, // La clave externa userId no puede ser nula al crear un servicio
+  },
+});
 
 // Turno-servicio
 Appointment.belongsTo(Service);
