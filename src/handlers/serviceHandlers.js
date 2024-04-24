@@ -5,14 +5,16 @@ import {
 
 export const postServiceHandler = async (req, res) => {
   try {
-    const { name, duration, startTime, endTime, days, location } = req.body;
+    const { name, duration, startTime, endTime, days, location, UserId } =
+      req.body;
     const response = await postServiceController(
       name,
       duration,
       startTime,
       endTime,
       days,
-      location
+      location,
+      UserId
     );
     res.status(200).json(response);
   } catch (error) {

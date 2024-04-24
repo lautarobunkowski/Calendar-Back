@@ -1,4 +1,4 @@
-import { Service } from "../database.js";
+import { Service, User } from "../database.js";
 
 export const postServiceController = async (
   name,
@@ -6,26 +6,31 @@ export const postServiceController = async (
   startTime,
   endTime,
   days,
-  location
+  location,
+  UserId
 ) => {
   try {
     const lowerCaseName = name.toLowerCase();
-    const [service, isCreatedService] = await Service.findOrCreate({
+    const serviceFind = await Service.findOne({
       where: { name: lowerCaseName },
-      defaults: {
-        duration,
-        startTime,
-        endTime,
-        days,
-        location,
-      },
     });
-    if (!isCreatedService) {
+    if (serviceFind) {
       return {
         error: "Conflicto de Servicio",
         message: "Ya existe un servicio con ese Nombre",
       };
     }
+
+    const service = await Service.create({
+      name: lowerCaseName,
+      duration,
+      startTime,
+      endTime,
+      days,
+      location,
+      UserId,
+    });
+    // console.log(service);
 
     return service;
   } catch (error) {
@@ -38,6 +43,7 @@ export const getServiceController = async (name) => {
     const lowerCaseName = name.toLowerCase();
     const service = await Service.findOne({
       where: { name: lowerCaseName },
+      include: User,
     });
     if (!service) {
       return {

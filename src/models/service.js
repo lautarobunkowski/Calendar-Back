@@ -29,6 +29,7 @@ export default (sequelize) => {
         allowNull: false,
       },
       location: { type: DataTypes.STRING(255), allowNull: false },
+      UserId: { type: DataTypes.UUID, allowNull: false },
     },
     { timestamps: false }
   );
