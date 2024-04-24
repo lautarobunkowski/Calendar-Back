@@ -1,15 +1,29 @@
 import { User, Service } from "../database.js";
 
-export const postUserController = async (name, email) => {
+export const postUserController = async (name, email, imageUrl) => {
   try {
-    const findUser = await User.findOne({
-      where: { email, name },
-    });
-    if (findUser) {
-      throw new Error("the username or/and email is taken");
+    // crea al usuario si no existe y si existe simplemente retorna la informacion del usuario encontrado
+    const userData = {
+      name, 
+      email
     }
-    const result = await User.create({ email, name });
-    return result;
+
+    if(imageUrl){
+      userData.imageUrl = imageUrl
+    }
+
+    const [user, isCreate] = await User.findOrCreate({
+      where: { email, name},
+      defaults: userData
+    });
+    
+    if(!isCreate){
+      user.dataValues.isCreate = false;
+      return user
+    }
+
+    user.dataValues.isCreate = true;
+    return user
   } catch (error) {
     throw error;
   }

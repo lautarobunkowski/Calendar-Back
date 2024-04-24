@@ -12,6 +12,7 @@ export default (sequelize) => {
       },
       email: { type: DataTypes.STRING, allowNull: false },
       name: { type: DataTypes.STRING, allowNull: false },
+      imageUrl: { type: DataTypes.STRING, allowNull: true },
       // phone: {type: DataTypes.STRING(20), allowNull: false}
     },
     { timestamps: false }
