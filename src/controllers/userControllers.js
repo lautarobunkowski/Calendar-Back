@@ -22,7 +22,10 @@ export const getUserController = async (name) => {
       include: Service,
     });
     if (!user) {
-      throw new Error("user not found");
+      throw {
+        message: "user not found",
+        status: 404,
+      };
     }
     return user;
   } catch (error) {
